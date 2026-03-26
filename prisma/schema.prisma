@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Section {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  slug        String       @unique
+  intro       String?
+  categories  Category[]
+  entries     Entry[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  
+  @@index([slug])
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  sectionId String
+  name      String
+  slug      String
+  section   Section  @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  entries   Entry[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sectionId, slug])
+  @@index([sectionId])
+}
+
+model HadithBook {
+  id          String          @id @default(cuid())
+  title       String
+  slug        String          @unique
+  description String?
+  chapters    HadithChapter[]
+  entries     Entry[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model HadithChapter {
+  id        String     @id @default(cuid())
+  bookId    String
+  title     String
+  slug      String
+  order     Int        @default(0)
+  book      HadithBook @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  entries   Entry[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([bookId, slug])
+  @@index([bookId, order])
+}
+
+model Surah {
+  id        String   @id @default(cuid())
+  number    Int      @unique
+  name      String
+  ayahs     Ayah[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([number])
+}
+
+model Ayah {
+  id         String   @id @default(cuid())
+  surahId    String
+  number     Int
+  arabicText String?
+  text       String
+  surah      Surah    @relation(fields: [surahId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  @@unique([surahId, number])
+}
+
+model Entry {
+  id           String         @id @default(cuid())
+  sectionId    String?
+  categoryId   String?
+  bookId       String?
+  chapterId    String?
+  title        String
+  content      String
+  arabicText   String?
+  hadithNumber String?
+  source       String?
+  tags         String[]
+  isPublished  Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  
+  section      Section?       @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  category     Category?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  book         HadithBook?    @relation(fields: [bookId], references: [id], onDelete: SetNull)
+  chapter      HadithChapter? @relation(fields: [chapterId], references: [id], onDelete: SetNull)
+  
+  revisions    EntryRevision[]
+
+  @@unique([bookId, hadithNumber])
+  @@index([sectionId])
+  @@index([categoryId])
+  @@index([bookId])
+  @@index([chapterId])
+  @@index([title])
+}
+
+model EntryRevision {
+  id         String   @id @default(cuid())
+  entryId    String
+  title      String
+  content    String
+  arabicText String?
+  source     String?
+  tags       String[]
+  createdAt  DateTime @default(now())
+  entry      Entry    @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  
+  @@index([entryId])
+}
