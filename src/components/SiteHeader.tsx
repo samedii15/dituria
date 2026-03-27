@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { useEffect } from "react";
 
 const nav = [
   { href: "/hadithet", label: "Hadithet" },
@@ -16,11 +14,6 @@ const nav = [
 
 export function SiteHeader() {
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
 
   function handleClose() {
     setIsOpen(false);
