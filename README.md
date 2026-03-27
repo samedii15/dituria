@@ -136,8 +136,8 @@ The blueprint provisions:
 
 If you do not want to use Blueprint, create a PostgreSQL service and a Node web service manually with:
 
-- Build command: `npm ci && npm run db:generate && npx prisma migrate deploy && npm run build`
-- Start command: `npx prisma migrate deploy && npm run start`
+- Build command: `npm ci && npm run db:generate && npx prisma db push && npm run build`
+- Start command: `npm run start`
 
 Set environment variables:
 
@@ -148,7 +148,7 @@ Set environment variables:
 
 ### Render Notes
 
-- `prisma migrate deploy` runs on every start safely and only applies pending migrations.
+- `prisma db push` keeps database schema aligned with the current Prisma models during build.
 - Health checks use `/api/health`, which verifies database connectivity.
 - Keep `ADMIN_SESSION_TOKEN` long and random in production.
 - `NODE_ENV` is handled by Render automatically in production.
