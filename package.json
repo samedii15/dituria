@@ -14,7 +14,8 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
     "db:import:quran": "node prisma/import-quran.mjs",
-    "db:copy:to-render": "node scripts/copy-local-to-render.mjs"
+    "db:copy:to-render": "node scripts/copy-local-to-render.mjs",
+    "db:sync:railway": "node scripts/copy-local-to-render.mjs"
   },
   "dependencies": {
     "@prisma/client": "^6.16.3",

@@ -168,3 +168,15 @@ Environment variables:
 - `ADMIN_USERNAME`
 - `ADMIN_PASSWORD`
 - `ADMIN_SESSION_TOKEN`
+
+### Local-first workflow (edit local, sync to Railway)
+
+If you want admin edits to happen locally first and then be pushed to Railway, run the app locally against your local database and sync after editing:
+
+```powershell
+$env:LOCAL_DATABASE_URL="<your-local-postgres-url>"
+$env:RAILWAY_DATABASE_URL="<your-railway-postgres-url>"
+npm run db:sync:railway
+```
+
+This sync replaces Railway content with your local database content.
