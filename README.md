@@ -136,7 +136,7 @@ The blueprint provisions:
 
 If you do not want to use Blueprint, create a PostgreSQL service and a Node web service manually with:
 
-- Build command: `npm ci && npm run db:generate && npm run build`
+- Build command: `npm ci && npm run db:generate && npx prisma migrate deploy && npm run build`
 - Start command: `npx prisma migrate deploy && npm run start`
 
 Set environment variables:
