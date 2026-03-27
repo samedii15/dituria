@@ -152,3 +152,19 @@ Set environment variables:
 - Health checks use `/api/health`, which verifies database connectivity.
 - Keep `ADMIN_SESSION_TOKEN` long and random in production.
 - `NODE_ENV` is handled by Render automatically in production.
+
+## Deploy On Railway
+
+Use [RAILWAY_DEPLOY.md](RAILWAY_DEPLOY.md) for the full flow.
+
+Quick setup:
+
+- Build command: `npm ci && npm run db:generate && npm run build`
+- Start command: `npx prisma db push && npm run start`
+
+Environment variables:
+
+- `DATABASE_URL`
+- `ADMIN_USERNAME`
+- `ADMIN_PASSWORD`
+- `ADMIN_SESSION_TOKEN`
