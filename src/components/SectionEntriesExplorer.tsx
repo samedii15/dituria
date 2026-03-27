@@ -51,8 +51,8 @@ export function SectionEntriesExplorer({ categories, entries }: Props) {
   const hasActiveFilters = Boolean(activeCategoryId || query.trim());
 
   return (
-    <section className="space-y-6">
-      <section className="card p-6">
+    <section className="space-y-5 sm:space-y-6">
+      <section className="card p-4 sm:p-6">
         <h2 className="text-2xl font-semibold text-[var(--primary)]">Kategorite</h2>
         <div className="mt-4 flex flex-wrap gap-2">
           {categories.length > 0 ? (
@@ -64,7 +64,7 @@ export function SectionEntriesExplorer({ categories, entries }: Props) {
                   key={category.id}
                   type="button"
                   onClick={() => setActiveCategoryId((current) => (current === category.id ? null : category.id))}
-                  className={`rounded-full border px-4 py-2 text-sm transition ${isActive ? "border-[var(--primary)] bg-[#e9f2ee] font-semibold text-[var(--primary)]" : "border-[var(--border)] bg-white hover:border-[var(--accent)] hover:bg-[#faf6ec]"}`}
+                  className={`min-h-11 rounded-full border px-4 py-2 text-sm transition active:scale-[0.99] ${isActive ? "border-[var(--primary)] bg-[#e9f2ee] font-semibold text-[var(--primary)]" : "border-[var(--border)] bg-white hover:border-[var(--accent)] hover:bg-[#faf6ec]"}`}
                 >
                   {category.name}
                 </button>
@@ -90,9 +90,9 @@ export function SectionEntriesExplorer({ categories, entries }: Props) {
 
       <section>
         <h2 className="mb-4 text-3xl font-semibold text-[var(--primary)]">Permbajtja</h2>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-3 md:grid-cols-2 md:gap-4">
           {filteredEntries.map((entry) => (
-            <Link key={entry.id} href={`/entries/${entry.id}`} className="card p-5">
+            <Link key={entry.id} href={`/entries/${entry.id}`} className="card p-5 active:scale-[0.99]">
               <p className="text-xl font-semibold text-[var(--primary)]">{entry.title}</p>
               <p className="mt-2 line-clamp-3 text-sm muted">{entry.content}</p>
               <p className="mt-3 text-xs text-[var(--accent)]">

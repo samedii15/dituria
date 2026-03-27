@@ -40,17 +40,17 @@ export function QuranSurahAccordionItem({ surah, isOpen, viewMode, hasActiveSear
       <button
         type="button"
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left sm:px-5"
+        className="flex min-h-14 w-full items-center justify-between gap-3 px-4 py-4 text-left active:bg-[#faf6ec] sm:px-5"
       >
         <div className="space-y-1">
           <p className="text-xs uppercase tracking-[0.09em] text-[var(--accent)]">Sure {surah.number}</p>
-          <h3 className="text-xl font-semibold text-[var(--primary)]">{surah.name}</h3>
+          <h3 className="text-lg font-semibold text-[var(--primary)] sm:text-xl">{surah.name}</h3>
           <p className="text-xs muted">
             {surah.totalAyahs} ajete
             {hasActiveSearch && !surah.matchedBySurahName ? ` • ${surah.matchedAyahs.length} perputhje` : ""}
           </p>
         </div>
-        <span className="rounded-full border border-[var(--border)] px-2.5 py-1 text-xs text-[var(--primary)]">
+        <span className="rounded-full border border-[var(--border)] px-3 py-1.5 text-xs text-[var(--primary)]">
           {isOpen ? "Mbyll" : "Hap"}
         </span>
       </button>

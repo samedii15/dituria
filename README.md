@@ -113,3 +113,42 @@ npm run dev
 
 - The app expects a running PostgreSQL instance.
 - Next.js 16 currently warns that `middleware` is deprecated in favor of `proxy`; current implementation remains functional.
+
+## Deploy On Render
+
+### Option 1: Blueprint (recommended)
+
+1. Push this repository to GitHub.
+2. In Render, click **New +** -> **Blueprint**.
+3. Select this repo. Render will detect `render.yaml`.
+4. Set these environment variables for the web service:
+	- `ADMIN_USERNAME`
+	- `ADMIN_PASSWORD`
+	- `ADMIN_SESSION_TOKEN`
+5. Deploy.
+
+The blueprint provisions:
+
+- one Node web service (`muslim-com-web`)
+- one PostgreSQL database (`muslim-com-db`)
+
+### Option 2: Manual service setup
+
+If you do not want to use Blueprint, create a PostgreSQL service and a Node web service manually with:
+
+- Build command: `npm ci && npm run db:generate && npm run build`
+- Start command: `npx prisma migrate deploy && npm run start`
+
+Set environment variables:
+
+- `DATABASE_URL` (from your Render PostgreSQL connection string)
+- `ADMIN_USERNAME`
+- `ADMIN_PASSWORD`
+- `ADMIN_SESSION_TOKEN`
+
+### Render Notes
+
+- `prisma migrate deploy` runs on every start safely and only applies pending migrations.
+- Health checks use `/api/health`, which verifies database connectivity.
+- Keep `ADMIN_SESSION_TOKEN` long and random in production.
+- `NODE_ENV` is handled by Render automatically in production.

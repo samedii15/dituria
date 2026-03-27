@@ -3,12 +3,14 @@
 :root {
   --background: #fffdf7;
   --paper: #ffffff;
+  --paper-soft: #fffcf4;
   --foreground: #122017;
   --muted: #5b685f;
   --primary: #134b35;
   --primary-strong: #0d3827;
   --accent: #b9964a;
   --border: #e8e0cf;
+  --border-strong: #d9caa8;
   --card-shadow: 0 10px 30px rgba(18, 32, 23, 0.08);
 }
 
@@ -25,8 +27,9 @@ body {
   color: var(--foreground);
   font-family: var(--font-body), serif;
   background-image:
-    radial-gradient(circle at 20% 5%, rgba(185, 150, 74, 0.12), transparent 34%),
-    radial-gradient(circle at 80% 0%, rgba(19, 75, 53, 0.08), transparent 30%);
+    radial-gradient(circle at 18% -2%, rgba(185, 150, 74, 0.15), transparent 35%),
+    radial-gradient(circle at 82% -10%, rgba(19, 75, 53, 0.1), transparent 32%),
+    linear-gradient(180deg, #fffdf7 0%, #fffaf0 56%, #fffef9 100%);
 }
 
 h1,
@@ -44,15 +47,32 @@ a {
 }
 
 .shell {
-  width: min(1150px, calc(100% - 2rem));
+  width: min(1150px, calc(100% - 1.25rem));
   margin-inline: auto;
 }
 
+@media (min-width: 640px) {
+  .shell {
+    width: min(1150px, calc(100% - 2rem));
+  }
+}
+
 .card {
-  background: var(--paper);
+  background:
+    linear-gradient(180deg, var(--paper) 0%, var(--paper-soft) 100%);
   border: 1px solid var(--border);
   border-radius: 18px;
-  box-shadow: var(--card-shadow);
+  box-shadow:
+    var(--card-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: box-shadow 220ms ease, border-color 220ms ease, transform 220ms ease;
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+  box-shadow:
+    0 14px 34px rgba(18, 32, 23, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
 }
 
 .muted {
@@ -75,6 +95,11 @@ a {
 
 .btn-primary:hover {
   background: var(--primary-strong);
+}
+
+.btn-primary:active,
+.btn-ghost:active {
+  transform: scale(0.99);
 }
 
 .btn-ghost {
@@ -101,4 +126,45 @@ button:disabled,
   height: 3px;
   border-radius: 4px;
   background: linear-gradient(90deg, #d2b573 0%, #9e7f3f 100%);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.35rem 0.72rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8d6a24;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.glass-panel {
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(5px);
+  border-radius: 16px;
+}
+
+.stat-tile {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff;
+  padding: 0.85rem 0.95rem;
+}
+
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea,
+  button {
+    font-size: 16px;
+  }
+
+  .card {
+    border-radius: 14px;
+  }
 }

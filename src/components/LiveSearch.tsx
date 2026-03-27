@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type SearchResult = {
   id: string;
@@ -20,6 +20,7 @@ export function LiveSearch({ sectionSlug, bookSlug, placeholder }: Props) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
+  const rootRef = useRef<HTMLDivElement | null>(null);
 
   const endpoint = useMemo(() => {
     const params = new URLSearchParams();
@@ -53,8 +54,27 @@ export function LiveSearch({ sectionSlug, bookSlug, placeholder }: Props) {
     return () => clearTimeout(timer);
   }, [query, endpoint]);
 
+  useEffect(() => {
+    function handleOutsideTap(event: MouseEvent | TouchEvent) {
+      if (!rootRef.current) return;
+
+      const target = event.target;
+      if (target instanceof Node && !rootRef.current.contains(target)) {
+        setResults([]);
+      }
+    }
+
+    document.addEventListener("mousedown", handleOutsideTap);
+    document.addEventListener("touchstart", handleOutsideTap, { passive: true });
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideTap);
+      document.removeEventListener("touchstart", handleOutsideTap);
+    };
+  }, []);
+
   return (
-    <div className="relative w-full">
+    <div ref={rootRef} className="relative w-full">
       <input
         value={query}
         onChange={(event) => setQuery(event.target.value)}
@@ -72,7 +92,7 @@ export function LiveSearch({ sectionSlug, bookSlug, placeholder }: Props) {
             <ul className="max-h-96 overflow-y-auto">
               {results.map((item) => (
                 <li key={item.id} className="border-b border-[var(--border)] last:border-b-0">
-                  <Link href={`/entries/${item.id}`} className="block px-4 py-3 hover:bg-[#faf6ec]">
+                  <Link href={`/entries/${item.id}`} className="block px-4 py-3.5 hover:bg-[#faf6ec]">
                     <p className="font-semibold text-[var(--primary)]">
                       {item.title}
                     </p>
