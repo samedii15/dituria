@@ -53,7 +53,18 @@ export function isDatabaseUnavailableError(error: unknown) {
   }
 
   const message = error.message.toLowerCase();
-  return message.includes("can't reach database server") || message.includes("prismaclientinitializationerror");
+  const prismaCodeCandidate = (error as unknown as { code?: unknown }).code;
+  const prismaCode = typeof prismaCodeCandidate === "string" ? prismaCodeCandidate : "";
+
+  return (
+    message.includes("can't reach database server") ||
+    message.includes("prismaclientinitializationerror") ||
+    message.includes("the table") ||
+    message.includes("does not exist in the current database") ||
+    message.includes("the column") ||
+    prismaCode === "P2021" ||
+    prismaCode === "P2022"
+  );
 }
 
 export function markDatabaseUnavailable(durationMs = 45000) {
