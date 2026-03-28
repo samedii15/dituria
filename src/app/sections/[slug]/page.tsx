@@ -6,6 +6,7 @@ import { getQuranSurahs, getSectionBySlug } from "@/lib/content";
 
 type Params = {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ q?: string }>;
 };
 
 type SectionCategory = {
@@ -21,8 +22,9 @@ type SectionEntry = {
   book?: { title: string } | null;
 };
 
-export default async function SectionPage({ params }: Params) {
+export default async function SectionPage({ params, searchParams }: Params) {
   const { slug } = await params;
+  const { q = "" } = await searchParams;
   const section = await getSectionBySlug(slug);
   const quranSurahs = slug === "kuran" ? await getQuranSurahs() : [];
 
@@ -43,7 +45,7 @@ export default async function SectionPage({ params }: Params) {
       </section>
 
       {slug === "kuran" ? (
-        <QuranSectionViewer surahs={quranSurahs} />
+        <QuranSectionViewer surahs={quranSurahs} initialQuery={q} />
       ) : (
         <SectionEntriesExplorer
           categories={section.categories as SectionCategory[]}

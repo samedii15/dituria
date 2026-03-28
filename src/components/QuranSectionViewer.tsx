@@ -19,6 +19,7 @@ type QuranSurah = {
 
 type Props = {
   surahs: QuranSurah[];
+  initialQuery?: string;
 };
 
 type ViewMode = "bilingual" | "arabic-only";
@@ -29,9 +30,10 @@ function normalize(value: string) {
   return value.toLocaleLowerCase();
 }
 
-export function QuranSectionViewer({ surahs }: Props) {
-  const [query, setQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState("");
+export function QuranSectionViewer({ surahs, initialQuery }: Props) {
+  const initialTerm = (initialQuery || "").trim();
+  const [query, setQuery] = useState(initialTerm);
+  const [debouncedQuery, setDebouncedQuery] = useState(initialTerm);
   const [openSurahId, setOpenSurahId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     if (typeof window === "undefined") {

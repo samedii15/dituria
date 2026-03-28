@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { LiveSearch } from "@/components/LiveSearch";
-import { searchEntries } from "@/lib/search";
+import { searchEntries, searchQuran } from "@/lib/search";
 
 type SearchPageProps = {
   searchParams: Promise<{ q?: string }>;
@@ -10,6 +10,7 @@ type SearchPageProps = {
 export default async function GlobalSearchPage({ searchParams }: SearchPageProps) {
   const { q = "" } = await searchParams;
   const results = q.trim() ? await searchEntries({ query: q, limit: 80 }) : [];
+  const quranResults = q.trim() ? await searchQuran({ query: q, limit: 114, mode: "full" }) : [];
 
   const grouped = new Map<string, typeof results>();
 
@@ -55,9 +56,31 @@ export default async function GlobalSearchPage({ searchParams }: SearchPageProps
             </div>
           </section>
         ))}
+
+        {quranResults.length > 0 ? (
+          <section className="card p-5">
+            <h2 className="text-2xl font-semibold text-[var(--primary)]">Kuran</h2>
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              {quranResults.map((item) => (
+                <Link
+                  key={item.id}
+                  href={`/sections/kuran?q=${encodeURIComponent(q)}`}
+                  className="rounded-xl border border-[var(--border)] bg-white p-3 active:scale-[0.99]"
+                >
+                  <p className="font-semibold text-[var(--primary)]">Sure {item.surahNumber}: {item.surahName}</p>
+                  <p className="mt-1 text-sm muted">
+                    {item.matchedAyahNumber && item.matchedAyahText
+                      ? `Ajeti ${item.matchedAyahNumber}: ${item.matchedAyahText}`
+                      : "Perputhje me emrin e sures"}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ) : null}
       </div>
 
-      {q.trim() && results.length === 0 ? (
+      {q.trim() && results.length === 0 && quranResults.length === 0 ? (
         <p className="card p-4 muted">Asnje rezultat.</p>
       ) : null}
 

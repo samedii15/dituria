@@ -8,7 +8,7 @@ export default async function HomePage() {
 
   return (
     <div className="shell space-y-10 py-6 sm:space-y-14 sm:py-10">
-      <section className="card relative overflow-hidden p-5 sm:p-10">
+      <section className="card relative p-5 sm:p-10">
         <div className="pointer-events-none absolute -top-10 -right-8 h-36 w-36 rounded-full bg-[radial-gradient(circle,_rgba(19,75,53,0.2)_0%,_rgba(19,75,53,0)_70%)]" />
         <div className="pointer-events-none absolute -bottom-16 -left-8 h-40 w-40 rounded-full bg-[radial-gradient(circle,_rgba(185,150,74,0.2)_0%,_rgba(185,150,74,0)_72%)]" />
         <div className="relative grid gap-8 md:grid-cols-[1.1fr_1fr] md:items-end">
